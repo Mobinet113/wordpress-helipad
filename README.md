@@ -8,6 +8,33 @@ Modern out-of-the-box WordPress installation utilising [Bedrock](https://roots.i
 * Easy to understand directory system.
 * Super bare bones with little overhead.
 
+## How to work on the theme
+
+The Helipad theme is built to utilise 
+gulp.js for better workflow and browser compatibility.
+
+When working on the theme, you will need ot enable the gulp.js file watcher,
+which listens for Javascript, Sass and PHP file changes.
+
+### How to run gulp.js 
+![alt text](https://www.nowcomms.com/wp-content/uploads/2019/02/gulp-logo.png "Gulp JS")
+
+Navigate to the theme directory:
+```sh
+ cd httpdocs/wp/app/themes/helipad
+```
+
+To install the node dependencies, run this once:
+```sh
+ yarn install
+```
+
+Start the gulp.js listener:
+```sh
+ gulp watch
+```
+
+
 # [Bedrock](https://roots.io/bedrock/)
 [![Packagist](https://img.shields.io/packagist/v/roots/bedrock.svg?style=flat-square)](https://packagist.org/packages/roots/bedrock)
 [![Build Status](https://img.shields.io/travis/roots/bedrock.svg?style=flat-square)](https://travis-ci.org/roots/bedrock)
