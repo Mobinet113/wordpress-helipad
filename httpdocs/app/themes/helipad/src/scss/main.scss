@@ -1,0 +1,31 @@
+/* [ VENDOR ] */
+
+@import "../../node_modules/bootstrap/scss/bootstrap";
+@import "../../node_modules/@fortawesome/fontawesome-free/scss/fontawesome";
+@import "../../node_modules/@fortawesome/fontawesome-free/scss/solid";
+@import "../../node_modules/@fortawesome/fontawesome-free/scss/brands";
+
+
+/* [ FONTS ] */
+
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,500');
+@import url('https://use.fontawesome.com/releases/v5.7.0/css/all.css');
+
+/* [ VARS ] */
+
+$font-a: 'Roboto', sans-serif;
+
+$color-a: #141414;
+$color-b: #272727;
+$color-c: #ebebeb;
+
+
+
+/* [ IMPORTS ] */
+
+@import "layout/bootstrap";
+@import "pages/bootstrap";
+@import "mixins/bootstrap";
+@import "modules/bootstrap";
+@import "vendor/bootstrap";
+@import "hacks/bootstrap";
