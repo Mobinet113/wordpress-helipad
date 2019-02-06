@@ -23,3 +23,5 @@ wp-cli.local.yml
 
 # Node & Gulp
 node_modules
+yarn.lock
+npm.lock

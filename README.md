@@ -1,3 +1,13 @@
+# Helipad 
+
+Modern out-of-the-box WordPress installation utilising [Bedrock](https://roots.io/bedrock/) as a starting point.
+
+## Theme Features
+
+* gulp.js automated workflow to compile and minify Sass and JS on save.
+* Easy to understand directory system.
+* Super bare bones with little overhead.
+
 # [Bedrock](https://roots.io/bedrock/)
 [![Packagist](https://img.shields.io/packagist/v/roots/bedrock.svg?style=flat-square)](https://packagist.org/packages/roots/bedrock)
 [![Build Status](https://img.shields.io/travis/roots/bedrock.svg?style=flat-square)](https://travis-ci.org/roots/bedrock)
@@ -22,11 +32,7 @@ Much of the philosophy behind Bedrock is inspired by the [Twelve-Factor App](htt
 
 ## Installation
 
-1. Create a new project: 
-    ```sh
-    $ composer create-project roots/bedrock
-    ```
-2. Update environment variables in the `.env` file:
+1. Update environment variables in the `.env` file:
   * `DB_NAME` - Database name
   * `DB_USER` - Database user
   * `DB_PASSWORD` - Database password
@@ -37,9 +43,9 @@ Much of the philosophy behind Bedrock is inspired by the [Twelve-Factor App](htt
   * `AUTH_KEY`, `SECURE_AUTH_KEY`, `LOGGED_IN_KEY`, `NONCE_KEY`, `AUTH_SALT`, `SECURE_AUTH_SALT`, `LOGGED_IN_SALT`, `NONCE_SALT`
     * Generate with [wp-cli-dotenv-command](https://github.com/aaemnnosttv/wp-cli-dotenv-command)
     * Generate with [our WordPress salts generator](https://roots.io/salts.html)
-3. Add theme(s) in `web/app/themes/` as you would for a normal WordPress site
-4. Set the document root on your webserver to Bedrock's `web` folder: `/path/to/site/web/` 
-5. Access WordPress admin at `https://example.com/wp/wp-admin/`
+2. Add theme(s) in `web/app/themes/` as you would for a normal WordPress site
+3. Set the document root on your webserver to Bedrock's `web` folder: `/path/to/site/web/` 
+4. Access WordPress admin at `https://example.com/wp/wp-admin/`
 
 ## Documentation
 
