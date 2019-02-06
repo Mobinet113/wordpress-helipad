@@ -3,5 +3,16 @@ header#masthead{
   nav{
     background: $color-c;
     padding: 20px 15px;
+
+    ul{
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: inline-block;
+
+      li{
+        text-decoration: none;
+      }
+    }
   }
 }
