@@ -7,7 +7,7 @@
  * @package Helipad
  */
 ?>
-
+<!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
   <meta charset="<?php bloginfo('charset'); ?>">
@@ -21,7 +21,6 @@
 
   <meta name="description" content="<?php bloginfo('description'); ?>">
 
-  <link rel="stylesheet" href="<?php echo get_stylesheet_directory_uri() ?>/dist/css/main.css">
 
   <?php wp_head(); ?>
 </head>

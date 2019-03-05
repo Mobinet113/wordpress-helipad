@@ -59,6 +59,23 @@ if (!function_exists('helipad_setup')) :
 endif;
 add_action('after_setup_theme', 'helipad_setup');
 
+function load_scripts($hook) {
+
+  $main_js_loc = get_stylesheet_directory_uri() . '/dist/js/scripts.js';
+  $main_css_loc = get_stylesheet_directory_uri() . '/dist/css/main.css';
+
+  // create version codes
+  $main_js_ver  = date("ymd-Gis", filemtime( __DIR__ . "/dist/js/scripts.js" ));
+  $main_css_ver = date("ymd-Gis", filemtime( __DIR__ . "/dist/js/scripts.js" ));
+
+  // enqueue the scripts and stylesheets
+  wp_enqueue_script( 'main_js', $main_js_loc,  array('jquery'), $main_js_ver, true );
+  wp_register_style( 'main_css', $main_css_loc, false, $main_css_ver );
+  wp_enqueue_style ( 'main_css' );
+
+}
+add_action('wp_enqueue_scripts', 'load_scripts');
+
 
 /**
  * Load Inc files with further functions

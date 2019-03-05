@@ -4,10 +4,10 @@ const cache = require('gulp-cache');
 const sourcemaps = require('gulp-sourcemaps');
 
 // JS Optimisation Dependencies
-const concat = require('gulp-concat');
 const rename = require('gulp-rename');
-const uglify = require('gulp-uglify');
 const babel = require('gulp-babel');
+const webpack = require('webpack');
+const webpackStream = require('webpack-stream');
 
 // PostCSS & Sass Dependencies
 const sass = require('gulp-sass');
@@ -20,7 +20,7 @@ const browserSync = require('browser-sync').create();
 /**
  * Settings
  */
-let domain = 'helipad.test'; // Used for BrowserSync
+let domain = 'stg.test'; // Used for BrowserSync
 
 
 /**
@@ -83,21 +83,35 @@ gulp.task('sass', function () {
  * Gulp Javascript compile task
  */
 gulp.task('scripts', function () {
-  return gulp.src([
-    'node_modules/babel-polyfill/dist/polyfill.js',
-    'node_modules/jquery/dist/jquery.js',
-    'src/js/**/*.js',
-  ])
+  return gulp.src('src/js/index.js')
     .pipe(sourcemaps.init())
 
-    .pipe(concat('scripts.js'))
-    .pipe(babel({presets: ['@babel/env']}))
-    .pipe(gulp.dest('dist/js/'))
+    .pipe(webpackStream(
+      {
+        entry: './src/js/index.js',
+        output: {
+          filename: 'scripts.js',
+        },
+        module: {
+          rules: [
+            {
+              test: /\.(js)$/,
+              exclude: /(node_modules)/,
+              loader: 'babel-loader',
+              query: {
+                presets: ['@babel/env']
+              }
+            }
+          ]
+        }
+      }
+    ))
 
-    .pipe(rename('scripts.min.js'))
-    .pipe(uglify())
+    .on('error', handleError)
+
     .pipe(sourcemaps.write())
 
+    .pipe(rename('scripts.js'))
     .pipe(gulp.dest('dist/js/'))
 
     .pipe(browserSync.reload({
@@ -116,3 +130,9 @@ gulp.task('images', function () {
     })))
     .pipe(gulp.dest('dist/media'))
 });
+
+
+function handleError(err) {
+  console.log(err.toString());
+  this.emit('end');
+}
