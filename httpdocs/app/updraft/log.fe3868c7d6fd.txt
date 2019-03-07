@@ -1,0 +1,93 @@
+0000.003 () Opened log file at time: Thu, 07 Mar 2019 15:31:36 +0000 on http://charitylearning.test/wp
+0000.004 () UpdraftPlus WordPress backup plugin (https://updraftplus.com): 1.16.6 WP: 5.1 PHP: 7.3.1 (fpm-fcgi, Darwin Benjamins-MacBook-Pro.local 18.2.0 Darwin Kernel Version 18.2.0: Thu Dec 20 20:46:53 PST 2018; root:xnu-4903.241.1~1/RELEASE_X86_64 x86_64) MySQL: 5.7.22 WPLANG: en_US Server: nginx/1.13.12 safe_mode: 0 max_execution_time: 900 memory_limit: 512M (used: 6.8M | 4M) multisite: N openssl: OpenSSL 1.0.2q  20 Nov 2018 mcrypt: N LANG:  ZipArchive::addFile: Y
+0000.004 () Free space on disk containing Updraft's temporary directory: 242851.2 MB
+0000.017 () Restore job started. Entities to restore: db. Restore options: {"updraft_encryptionphrase":"","updraft_restorer_wpcore_includewpconfig":false,"updraft_incremental_restore_point":-1}
+0000.023 () Will not delete any archives after unpacking them, because there was no cloud storage for this backup
+0000.025 () Entity: db
+0000.025 () restore_backup(backup_file=backup_2019-03-07-0856_The_Charity_Learning_Consortium_cc30bf183c2b-db, type=db, info=a:0:{}, last_one=1)
+0000.026 () Unpacking backup... (backup_2019-03-07-0856_The_Charity_Learning_Consortium_cc30bf183c2b-db, 25.8 Mb)
+0000.101 () Database successfully unpacked
+0000.102 () Restoring the database (on a large site this can take a long time - if it times out (which can happen if your web hosting company has configured your hosting to limit resources) then you should use a different method, such as phpMyAdmin)...
+0000.103 () Using direct MySQL access; value of use_mysqli is: 1
+0000.173 () Max packet size: 32 MB
+0000.173 () Entering maintenance mode
+0000.173 () Enabling Maintenance mode&#8230;
+0000.175 () Backup of: https://charitylearning.org
+0000.186 () Content URL: https://charitylearning.org/wp-content
+0000.186 () Uploads URL: http://charitylearning.org/wp-content/uploads
+0000.187 () Old table prefix: clc_
+0000.187 () Site information: multisite=0
+0000.189 () New table prefix: clc_
+0000.196 () Processing table (InnoDB): clc_options
+0000.298 () Restoring prior UD configuration (table: clc_options; keys: 94)
+0000.420 () Elegant themes theme builder plugin data detected: resetting temporary folder
+0000.423 () Processing table (InnoDB): clc_users
+0000.442 () Processing table (InnoDB): clc_usermeta
+0000.463 () Processing table (InnoDB): clc_commentmeta
+0000.482 () Processing table (InnoDB): clc_comments
+0000.504 () Processing table (InnoDB): clc_links
+0000.525 () Processing table (InnoDB): clc_postmeta
+0001.306 () Processing table (InnoDB): clc_posts
+0001.867 () Processing table (InnoDB): clc_term_relationships
+0001.913 () Database queries processed: 50 in 1.81 seconds
+0001.913 () Processing table (InnoDB): clc_term_taxonomy
+0001.941 () Processing table (InnoDB): clc_termmeta
+0001.954 () Processing table (InnoDB): clc_terms
+0001.976 () Processing table (InnoDB): clc_yoast_seo_links
+0002.043 () Processing table (InnoDB): clc_yoast_seo_meta
+0002.081 () Processing table (InnoDB): clc_dlm_order
+0002.102 () Processing table (InnoDB): clc_dlm_order_customer
+0002.124 () Processing table (InnoDB): clc_dlm_order_item
+0002.142 () Processing table (InnoDB): clc_dlm_order_transaction
+0002.240 () Processing table (InnoDB): clc_dlm_session
+0002.255 () Processing table (InnoDB): clc_download_log
+0002.272 () Processing table (InnoDB): clc_ebd_item
+0002.289 () Processing table (InnoDB): clc_ebd_link
+0002.312 () Processing table (InnoDB): clc_ebd_posted_data
+0002.326 () Processing table (InnoDB): clc_et_bloom_stats
+0002.520 () Processing table (InnoDB): clc_login_security_solution_fail
+0002.573 () Database queries processed: 100 in 2.47 seconds
+0002.855 () Processing table (MyISAM): clc_mail_bank
+0002.876 () Processing table (InnoDB): clc_mail_bank_email_logs
+0004.289 () Processing table (MyISAM): clc_mail_bank_logs
+0004.612 () Database queries processed: 150 in 4.50 seconds
+0004.623 () Processing table (MyISAM): clc_mail_bank_meta
+0004.652 () Processing table (InnoDB): clc_redirects
+0004.668 () Processing table (InnoDB): clc_wfBadLeechers
+0004.697 () Processing table (InnoDB): clc_wfBlockedCommentLog
+0004.721 () Processing table (InnoDB): clc_wfBlockedIPLog
+0004.733 () Processing table (InnoDB): clc_wfBlocks
+0004.743 () Processing table (InnoDB): clc_wfBlocks7
+0004.757 () Processing table (InnoDB): clc_wfBlocksAdv
+0004.767 () Processing table (InnoDB): clc_wfConfig
+0004.810 () Processing table (InnoDB): clc_wfCrawlers
+0004.822 () Processing table (InnoDB): clc_wfFileChanges
+0004.831 () Processing table (InnoDB): clc_wfFileMods
+0004.851 () Processing table (InnoDB): clc_wfHits
+0004.873 () Processing table (InnoDB): clc_wfHoover
+0004.887 () Processing table (InnoDB): clc_wfIssues
+0004.899 () Processing table (InnoDB): clc_wfKnownFileList
+0004.999 () Processing table (InnoDB): clc_wfLeechers
+0005.018 () Database queries processed: 200 in 4.91 seconds
+0005.019 () Processing table (InnoDB): clc_wfLiveTrafficHuman
+0005.038 () Processing table (InnoDB): clc_wfLockedOut
+0005.053 () Processing table (InnoDB): clc_wfLocs
+0005.072 () Processing table (InnoDB): clc_wfLogins
+0005.090 () Processing table (InnoDB): clc_wfNet404s
+0005.105 () Processing table (InnoDB): clc_wfNotifications
+0005.122 () Processing table (InnoDB): clc_wfPendingIssues
+0005.140 () Processing table (InnoDB): clc_wfReverseCache
+0005.149 () Processing table (InnoDB): clc_wfSNIPCache
+0005.161 () Processing table (InnoDB): clc_wfScanners
+0005.170 () Processing table (InnoDB): clc_wfStatus
+0005.181 () Processing table (InnoDB): clc_wfThrottleLog
+0005.196 () Processing table (InnoDB): clc_wfVulnScanners
+0005.211 () Processing table (InnoDB): clc_wplc_chat_msgs
+0005.225 () Processing table (InnoDB): clc_wplc_chat_sessions
+0005.239 () Processing table (InnoDB): clc_wplc_offline_messages
+0005.248 () Unlocking database and leaving maintenance mode
+0005.248 () Disabling Maintenance mode&#8230;
+0005.249 () Finished: lines processed: 244 in 5.14 seconds
+0005.251 () Cleaning up rubbish...
+0005.270 () Restore successful!
+0005.270 () Restore successful

@@ -1,0 +1,82 @@
+0000.087 (R) [notice] Looking for db archive: file name: backup_2019-03-07-0856_The_Charity_Learning_Consortium_cc30bf183c2b-db
+0000.087 (R) [notice] Archive is expected to be size: 26409.4 KB: OK
+0000.089 (R) [notice] Will not delete any archives after unpacking them, because there was no cloud storage for this backup
+0000.091 (R) [notice] Unpacking backup... (backup_2019-03-07-0856_The_Charity_Learning_Consortium_cc30bf183c2b-db, 25.8 Mb)
+0000.497 (R) [notice] Restoring the database (on a large site this can take a long time - if it times out (which can happen if your web hosting company has configured your hosting to limit resources) then you should use a different method, such as phpMyAdmin)...
+0000.557 (R) [notice] Enabling Maintenance mode&#8230;
+0000.558 (R) [notice] Backup of: https://charitylearning.org
+0000.571 (R) [notice] Content URL: https://charitylearning.org/wp-content
+0000.571 (R) [notice] Uploads URL: http://charitylearning.org/wp-content/uploads
+0000.571 (R) [notice] Old table prefix: clc_
+0000.571 (R) [notice] Site information: multisite = 0
+0000.572 (R) [notice] New table prefix: clc_
+0000.577 (R) [notice] Processing table (InnoDB):  clc_options
+0000.780 (R) [notice] Elegant themes theme builder plugin data detected: resetting temporary folder
+0000.782 (R) [notice] Processing table (InnoDB):  clc_users
+0000.799 (R) [notice] Processing table (InnoDB):  clc_usermeta
+0000.825 (R) [notice] Processing table (InnoDB):  clc_commentmeta
+0000.850 (R) [notice] Processing table (InnoDB):  clc_comments
+0000.865 (R) [notice] Processing table (InnoDB):  clc_links
+0000.880 (R) [notice] Processing table (InnoDB):  clc_postmeta
+0001.533 (R) [notice] Processing table (InnoDB):  clc_posts
+0002.392 (R) [notice] Processing table (InnoDB):  clc_term_relationships
+0002.471 (R) [notice] Database queries processed: 50 in 1.97 seconds
+0002.471 (R) [notice] Processing table (InnoDB):  clc_term_taxonomy
+0002.507 (R) [notice] Processing table (InnoDB):  clc_termmeta
+0002.532 (R) [notice] Processing table (InnoDB):  clc_terms
+0002.559 (R) [notice] Processing table (InnoDB):  clc_yoast_seo_links
+0002.619 (R) [notice] Processing table (InnoDB):  clc_yoast_seo_meta
+0002.655 (R) [notice] Processing table (InnoDB):  clc_dlm_order
+0002.678 (R) [notice] Processing table (InnoDB):  clc_dlm_order_customer
+0002.699 (R) [notice] Processing table (InnoDB):  clc_dlm_order_item
+0002.713 (R) [notice] Processing table (InnoDB):  clc_dlm_order_transaction
+0002.739 (R) [notice] Processing table (InnoDB):  clc_dlm_session
+0002.765 (R) [notice] Processing table (InnoDB):  clc_download_log
+0002.818 (R) [notice] Processing table (InnoDB):  clc_ebd_item
+0002.844 (R) [notice] Processing table (InnoDB):  clc_ebd_link
+0002.880 (R) [notice] Processing table (InnoDB):  clc_ebd_posted_data
+0002.920 (R) [notice] Processing table (InnoDB):  clc_et_bloom_stats
+0003.267 (R) [notice] Processing table (InnoDB):  clc_login_security_solution_fail
+0003.369 (R) [notice] Database queries processed: 100 in 2.87 seconds
+0003.899 (R) [notice] Processing table (MyISAM):  clc_mail_bank
+0003.937 (R) [notice] Processing table (InnoDB):  clc_mail_bank_email_logs
+0006.689 (R) [notice] Processing table (MyISAM):  clc_mail_bank_logs
+0006.997 (R) [notice] Database queries processed: 150 in 6.50 seconds
+0007.022 (R) [notice] Processing table (MyISAM):  clc_mail_bank_meta
+0007.059 (R) [notice] Processing table (InnoDB):  clc_redirects
+0007.079 (R) [notice] Processing table (InnoDB):  clc_wfBadLeechers
+0007.090 (R) [notice] Processing table (InnoDB):  clc_wfBlockedCommentLog
+0007.103 (R) [notice] Processing table (InnoDB):  clc_wfBlockedIPLog
+0007.112 (R) [notice] Processing table (InnoDB):  clc_wfBlocks
+0007.123 (R) [notice] Processing table (InnoDB):  clc_wfBlocks7
+0007.136 (R) [notice] Processing table (InnoDB):  clc_wfBlocksAdv
+0007.146 (R) [notice] Processing table (InnoDB):  clc_wfConfig
+0007.205 (R) [notice] Processing table (InnoDB):  clc_wfCrawlers
+0007.234 (R) [notice] Processing table (InnoDB):  clc_wfFileChanges
+0007.247 (R) [notice] Processing table (InnoDB):  clc_wfFileMods
+0007.258 (R) [notice] Processing table (InnoDB):  clc_wfHits
+0007.295 (R) [notice] Processing table (InnoDB):  clc_wfHoover
+0007.305 (R) [notice] Processing table (InnoDB):  clc_wfIssues
+0007.320 (R) [notice] Processing table (InnoDB):  clc_wfKnownFileList
+0007.484 (R) [notice] Processing table (InnoDB):  clc_wfLeechers
+0007.514 (R) [notice] Database queries processed: 200 in 7.01 seconds
+0007.517 (R) [notice] Processing table (InnoDB):  clc_wfLiveTrafficHuman
+0007.541 (R) [notice] Processing table (InnoDB):  clc_wfLockedOut
+0007.555 (R) [notice] Processing table (InnoDB):  clc_wfLocs
+0007.578 (R) [notice] Processing table (InnoDB):  clc_wfLogins
+0007.612 (R) [notice] Processing table (InnoDB):  clc_wfNet404s
+0007.630 (R) [notice] Processing table (InnoDB):  clc_wfNotifications
+0007.669 (R) [notice] Processing table (InnoDB):  clc_wfPendingIssues
+0007.716 (R) [notice] Processing table (InnoDB):  clc_wfReverseCache
+0007.744 (R) [notice] Processing table (InnoDB):  clc_wfSNIPCache
+0007.767 (R) [notice] Processing table (InnoDB):  clc_wfScanners
+0007.793 (R) [notice] Processing table (InnoDB):  clc_wfStatus
+0007.814 (R) [notice] Processing table (InnoDB):  clc_wfThrottleLog
+0007.834 (R) [notice] Processing table (InnoDB):  clc_wfVulnScanners
+0007.852 (R) [notice] Processing table (InnoDB):  clc_wplc_chat_msgs
+0007.871 (R) [notice] Processing table (InnoDB):  clc_wplc_chat_sessions
+0007.900 (R) [notice] Processing table (InnoDB):  clc_wplc_offline_messages
+0007.926 (R) [notice] Disabling Maintenance mode&#8230;
+0007.926 (R) [notice] Finished: lines processed: 244 in 7.43 seconds
+0007.931 (R) [notice] Cleaning up rubbish...
+0007.968 (R) [notice] Restore successful!

@@ -9,6 +9,13 @@
       <excludeFolder url="file://$MODULE_DIR$/bedrock/vendor/roots/wp-password-bcrypt" />
       <excludeFolder url="file://$MODULE_DIR$/bedrock/vendor/squizlabs/php_codesniffer" />
       <excludeFolder url="file://$MODULE_DIR$/bedrock/vendor/vlucas/phpdotenv" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/oscarotero/env" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/roots/wordpress-core-installer" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/roots/wp-config" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/roots/wp-password-bcrypt" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/squizlabs/php_codesniffer" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/vlucas/phpdotenv" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
