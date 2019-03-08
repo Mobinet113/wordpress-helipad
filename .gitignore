@@ -1,5 +1,4 @@
 # Application
-httpdocs/app/plugins/*
 !httpdocs/app/plugins/.gitkeep
 httpdocs/app/mu-plugins/*/
 httpdocs/app/upgrade
