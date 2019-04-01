@@ -3,6 +3,7 @@
 namespace Never5\DownloadMonitor\Shop\Admin;
 
 use Never5\DownloadMonitor\Shop\Services\Services;
+use Never5\DownloadMonitor\Shop\Util\PostType;
 
 if ( ! class_exists( '\WP_List_Table' ) ) {
 	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
@@ -55,13 +56,13 @@ class OrderTable extends \WP_List_Table {
 	 * Empty trash
 	 */
 	private function empty_trash() {
-		if(Services::get()->service( 'order_repository' )->empty_trash()) {
-		    ?>
+		if ( Services::get()->service( 'order_repository' )->empty_trash() ) {
+			?>
             <div id="message" class="updated notice notice-success">
                 <p><?php _e( 'Trashed orders have been permanently deleted.', 'download-monitor' ); ?></p>
             </div>
-            <?php
-        }
+			<?php
+		}
 	}
 
 	/**
@@ -70,7 +71,7 @@ class OrderTable extends \WP_List_Table {
 	 * @return string
 	 */
 	private function get_base_url() {
-		return admin_url( "edit.php?post_type=dlm_download&page=download-monitor-orders" );
+		return admin_url( sprintf( "edit.php?post_type=%s&page=download-monitor-orders", PostType::KEY ) );
 	}
 
 	/**
@@ -122,10 +123,10 @@ class OrderTable extends \WP_List_Table {
 					$customer_name .= " " . $order->get_customer()->get_last_name();
 				}
 
-				return '<a href="' . add_query_arg( 'details', $order->get_id(), $this->get_base_url() ) . '">#' . $order->get_id() . ' ' . $customer_name . '</a>';
+				return '<a href="' . add_query_arg( 'details', $order->get_id(), $this->get_base_url() ) . '">#' . esc_html( $order->get_id() . ' ' . $customer_name ) . '</a>';
 				break;
 			case 'status' :
-				return '<span class="dlm-order-status dlm-order-status-' . $order->get_status()->get_key() . '" title="' . $order->get_status()->get_label() . '">' . $order->get_status()->get_label() . '</span>';
+				return '<span class="dlm-order-status dlm-order-status-' . $order->get_status()->get_key() . '" title="' . $order->get_status()->get_label() . '">' . esc_html( $order->get_status()->get_label() ) . '</span>';
 				break;
 			case 'date' :
 				$time_str = date_i18n( get_option( 'date_format' ), $order->get_date_created()->format( 'U' ) );
@@ -279,8 +280,8 @@ class OrderTable extends \WP_List_Table {
                                 value="-1" <?php selected( $this->orders_per_page, - 1 ) ?>><?php _e( 'Show All', 'download-monitor' ); ?></option>
                     </select>
 
-                    <input type="hidden" name="post_type" value="dlm_download"/>
-                    <input type="hidden" name="page" value="download-monitor-logs"/>
+                    <input type="hidden" name="post_type" value="<?php echo PostType::KEY; ?>"/>
+                    <input type="hidden" name="page" value="download-monitor-orders"/>
                     <input type="submit" value="<?php _e( 'Filter', 'download-monitor' ); ?>" class="button"/>
 
 					<?php
@@ -383,6 +384,8 @@ class OrderTable extends \WP_List_Table {
 	 */
 	public function process_bulk_action() {
 
+		return;
+
 		if ( 'delete' === $this->current_action() ) {
 
 			// check nonce
@@ -392,7 +395,7 @@ class OrderTable extends \WP_List_Table {
 
 			// check capability
 			if ( ! current_user_can( 'dlm_manage_logs' ) ) {
-				wp_die( "You're not allowed to delete logs!" );
+				wp_die( "You're not allowed to delete orders!" );
 			}
 
 			// check

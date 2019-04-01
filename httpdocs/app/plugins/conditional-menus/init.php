@@ -2,7 +2,7 @@
 /*
 Plugin Name:  Conditional Menus
 Plugin URI:   https://themify.me/conditional-menus
-Version:      1.1.1
+Version:      1.1.3
 Author:       Themify
 Author URI:   https://themify.me/
 Description:  This plugin enables you to set conditional menus per posts, pages, categories, archive pages, etc.
@@ -69,7 +69,7 @@ class Themify_Conditional_Menus {
 	public function action_links( $links ) {
 		if ( is_plugin_active( 'themify-updater/themify-updater.php' ) ) {
 			$tlinks = array(
-			 '<a href="' . admin_url( 'index.php?page=themify-licence' ) . '">'.__('Themify Licence', 'themify-cm') .'</a>',
+			 '<a href="' . admin_url( 'index.php?page=themify-license' ) . '">'.__('Themify License', 'themify-cm') .'</a>',
 			 );
 		} else {
 			$tlinks = array(
@@ -88,6 +88,8 @@ class Themify_Conditional_Menus {
 			add_action( 'after_menu_locations_table', array( $this, 'conditions_dialog' ) );
 			add_filter( 'themify_cm_conditions_post_types', array( $this, 'exclude_attachments_from_conditions' ) );
 			add_action( 'wp_ajax_themify_cm_get_conditions', array( $this, 'ajax_get_conditions' ) );
+			add_action( 'wp_ajax_themify_create_inner_page', array( $this, 'ajax_create_inner_page' ) );
+			add_action( 'wp_ajax_themify_create_page_pagination', array( $this, 'ajax_create_page_pagination' ) );
 			add_action( 'admin_menu', array( $this, 'add_plugin_page' ) );
 			add_action( 'admin_init', array( $this, 'activation_redirect' ) );
 			add_action( 'wp_delete_nav_menu', array( $this, 'wp_delete_nav_menu' ) );
@@ -199,7 +201,8 @@ class Themify_Conditional_Menus {
 
 	public function save_options() {
 		if( isset( $_POST['menu-locations'] ) ) {
-			set_theme_mod( 'themify_conditional_menus', $_POST['themify_cm'] );
+			$themify_cm = isset( $_POST['themify_cm'] ) ? $_POST['themify_cm'] : array();
+			set_theme_mod( 'themify_conditional_menus', $themify_cm );
 		}
 	}
 
@@ -230,9 +233,9 @@ class Themify_Conditional_Menus {
 
 	public function get_conditions_dialog() {
 		$output = '
-			<div id="themify-cm-conditions" class="clearfix" style="display: none;">
+			<div id="themify-cm-conditions" class="themify-cm-conditions-container themify-admin-lightbox clearfix" style="display: none;" data-item="">
 				<h3 class="themify-cm-title">' . __( 'Condition', 'themify-cm' ) . '</h3>
-				<a href="#" id="themify-cm-close">x</a>
+				<a href="#" class="themify-cm-close">x</a>
 				<div class="lightbox_container">
 				</div>
 				<a href="#" class="button uncheck-all">'. __( 'Uncheck All', 'themify-cm' ) .'</a>
@@ -283,9 +286,8 @@ class Themify_Conditional_Menus {
 
 		if( ! empty( $logic ) ) {
 			$visible = false; // if any condition is set for a hook, hide it on all pages of the site except for the chosen ones.
-			$shop = $this->is_wc_shop();
 			if( ( is_front_page() && isset( $logic['general']['home'] ) )
-				|| ( (is_page() || $shop) && isset( $logic['general']['page'] ) && ! is_front_page() )
+				|| ( is_page() && isset( $logic['general']['page'] ) && ! is_front_page() )
 				|| ( is_single() && isset( $logic['general']['single'] ) )
 				|| ( is_search() && isset( $logic['general']['search'] ) )
 				|| ( is_author() && isset( $logic['general']['author'] ) )
@@ -327,18 +329,26 @@ class Themify_Conditional_Menus {
 					}
 				}
 
-				if( ! $visible && ! empty( $logic['post_type'] ) && ( $slug = $shop ? $this->get_wc_shop() : isset( $query_object->post_name ) ? $query_object->post_name : false ) ) {
+				if ( ! $visible && ! empty( $logic['post_type'] ) ) {
 
 					foreach( $logic['post_type'] as $post_type => $posts ) {
 						$posts = array_keys( $posts );
-						if( $post_type === 'page' && isset( $query_object->post_parent ) && $query_object->post_parent > 0 ) {
-						   $slug = str_replace( home_url(), '', get_permalink( $query_object->ID ) );
-						}
 
-						if( ( $post_type === 'post' && is_single() && is_single( $posts ) )
-							|| ( $post_type === 'page' && ( is_page( $posts ) || ( ! is_front_page() && is_home() &&  in_array( get_post_field( 'post_name', get_option( 'page_for_posts' ) ), $posts ) ) // check for Posts page
+						if (
+							// Post single
+							( $post_type === 'post' && is_single() && is_single( $posts ) )
+							// Page view
+							|| ( $post_type === 'page' && (
+								( is_page() &&
+									( is_page( $posts )
+									// check for pages that have a Parent, the slug for these pages are stored differently.
+									|| ( isset( $query_object->post_parent ) && $query_object->post_parent > 0 && in_array( str_replace( home_url(), '', get_permalink( $query_object->ID ) ), $posts ) )
+								) )
+								|| ( ! is_front_page() && is_home() &&  in_array( get_post_field( 'post_name', get_option( 'page_for_posts' ) ), $posts ) ) // check for Posts page
+								|| ( class_exists( 'WooCommerce' ) && function_exists( 'is_shop' ) && in_array( get_post_field( 'post_name', wc_get_page_id( 'shop' ) ), $posts ) && is_shop() ) // check for WC Shop page
 							) )
-							|| ( ( is_singular( $post_type ) || $shop ) && in_array( $slug, $posts ) )
+							// Custom Post Types single view check
+							|| ( is_singular( $post_type ) && in_array( $query_object->post_name, $posts ) )
 						) {
 							$visible = true;
 							break;
@@ -351,16 +361,228 @@ class Themify_Conditional_Menus {
 		return $visible;
 	}
 
-	public function is_wc_shop(){
-		return ! class_exists( 'WooCommerce' ) ? false : is_shop();
+	function ajax_create_page_pagination() {
+		$current_page = isset( $_POST['current_page'] ) ? $_POST['current_page'] : 1;
+		$num_of_pages = isset( $_POST['num_of_pages'] ) ? $_POST['num_of_pages'] : 0;
+		echo $this->create_page_pagination($current_page, $num_of_pages);
+		die;
 	}
-	
-	public function get_wc_shop(){
-		if( ! class_exists( 'WooCommerce' ) ) {
-			return false;
+
+	/**
+	 * Render pagination for specific page.
+	 *
+	 * @param Integer $current_page The current page that needs to be rendered.
+	 * @param Integer $num_of_pages The number of all pages.
+	 *
+	 * @return String The HTML with pagination.
+	 */
+	function create_page_pagination( $current_page, $num_of_pages ) {
+		$links_in_the_middle = 4;
+		$links_in_the_middle_min_1 = $links_in_the_middle - 1;
+		$first_link_in_the_middle   = $current_page - floor( $links_in_the_middle_min_1 / 2 );
+		$last_link_in_the_middle    = $current_page + ceil( $links_in_the_middle_min_1 / 2 );
+		if ( $first_link_in_the_middle <= 0 ) {
+			$first_link_in_the_middle = 1;
 		}
-		$shop = get_post( wc_get_page_id( 'shop' ) );
-		return $shop->post_name;
+		if ( ( $last_link_in_the_middle - $first_link_in_the_middle ) != $links_in_the_middle_min_1 ) {
+			$last_link_in_the_middle = $first_link_in_the_middle + $links_in_the_middle_min_1;
+		}
+		if ( $last_link_in_the_middle > $num_of_pages ) {
+			$first_link_in_the_middle = $num_of_pages - $links_in_the_middle_min_1;
+			$last_link_in_the_middle  = (int) $num_of_pages;
+		}
+		if ( $first_link_in_the_middle <= 0 ) {
+			$first_link_in_the_middle = 1;
+		}
+		$pagination = '';
+		if ( $current_page != 1 ) {
+			$pagination .= '<a href="/page/' . ( $current_page - 1 ) . '" class="prev page-numbers ti-angle-left"/>';
+		}
+		if ( $first_link_in_the_middle >= 3 && $links_in_the_middle < $num_of_pages ) {
+			$pagination .= '<a href="/page/" class="page-numbers">1</a>';
+
+			if ( $first_link_in_the_middle != 2 ) {
+				$pagination .= '<span class="page-numbers extend">...</span>';
+			}
+		}
+		for ( $i = $first_link_in_the_middle; $i <= $last_link_in_the_middle; $i ++ ) {
+			if ( $i == $current_page ) {
+				$pagination .= '<span class="page-numbers current">' . $i . '</span>';
+			} else {
+				$pagination .= '<a href="/page/' . $i . '" class="page-numbers">' . $i . '</a>';
+			}
+		}
+		if ( $last_link_in_the_middle < $num_of_pages ) {
+			if ( $last_link_in_the_middle != ( $num_of_pages - 1 ) ) {
+				$pagination .= '<span class="page-numbers extend">...</span>';
+			}
+			$pagination .= '<a href="/page/' . $num_of_pages . '" class="page-numbers">' . $num_of_pages . '</a>';
+		}
+		if ( $current_page != $last_link_in_the_middle ) {
+			$pagination .= '<a href="/page/' . ( $current_page + $i ) . '" class="next page-numbers ti-angle-right"></a>';
+		}
+
+		return $pagination;
+	}
+
+	function ajax_create_inner_page() {
+		$selected = array();
+		if ( isset( $_POST['selected'] ) ) {
+			parse_str( $_POST['selected'], $selected );
+		}
+		$type= isset( $_POST['type'] ) ? $_POST['type'] : 'pages';
+		echo $this->create_inner_page($type, $selected);
+		die;
+	}
+
+	/**
+	 * Renders pages, posts types and categories items based on current page.
+	 *
+	 * @param string $type The type of items to render.
+	 * @param array $selected The array of all selected options.
+	 *
+	 * @return string The HTML to render items as HTML.
+	 */
+	function create_inner_page( $type, $selected ) {
+		$posts_per_page = 26;
+		$output = '';
+		switch ($type) {
+			case 'page':
+				$key = 'page';
+				$posts = get_posts( array( 'post_type' => $key, 'posts_per_page' => -1, 'post_status' => 'publish', 'order' => 'ASC', 'orderby' => 'title',  'no_found_rows' => true) );
+				if( ! empty( $posts ) ) {
+					$i = 1;
+					$page_id = 1;
+					$num_of_single_pages = count($posts);
+					$num_of_pages = (int) ceil( $num_of_single_pages / $posts_per_page );
+					$output .= '<div class="themify-visibility-items-inner" data-items="' . $num_of_single_pages . '" data-pages="' . $num_of_pages . '">';
+					$output .= '<div class="themify-visibility-items-page themify-visibility-items-page-' . $page_id . '">';
+					foreach ( $posts as $post ) :
+						if ( $post->post_parent > 0 ) {
+							$post->post_name = str_replace( home_url(), '', get_permalink( $post->ID ) );
+						}
+						$checked = isset( $selected['post_type'][ $key ][ $post->post_name ] ) ? checked( $selected['post_type'][ $key ][ $post->post_name ], 'on', false ) : '';
+						/* note: slugs are more reliable than IDs, they stay unique after export/import */
+						$output .= '<label><input type="checkbox" name="post_type[' . $key . '][' . $post->post_name . ']"' . $checked . ' />' . $post->post_title . '</label>';
+						if ( $i === ($page_id * $posts_per_page) ) {
+							$output .= '</div>';
+							$page_id++;
+							$output .= '<div class="themify-visibility-items-page themify-visibility-items-page-' . $page_id . ' is-hidden">';
+						}
+						$i++;
+					endforeach;
+					$output .= '</div>';
+					if ( $num_of_pages > 1 ) {
+						$output .= '<div class="themify-visibility-pagination">';
+						$output .= $this->create_page_pagination( 1, $num_of_pages );
+						$output .= '</div>';
+					}
+					$output .= '</div>';
+				}
+				break;
+
+			case 'category_single':
+				$key = 'category_single';
+				$terms = get_terms( 'category', array( 'hide_empty' => true ) );
+				if ( ! empty( $terms ) ) {
+					$i                   = 1;
+					$page_id             = 1;
+					$num_of_single_pages = count( $terms );
+					$num_of_pages        = (int) ceil( $num_of_single_pages / $posts_per_page );
+					$output              .= '<div class="themify-visibility-items-inner" data-items="' . $num_of_single_pages . '" data-pages="' . $num_of_pages . '">';
+					$output              .= '<div class="themify-visibility-items-page themify-visibility-items-page-' . $page_id . '">';
+					foreach ( $terms as $term ) :
+						$checked = isset( $selected['tax'][ $key ][ $term->slug ] ) ? checked( $selected['tax'][ $key ][ $term->slug ], 'on', false ) : '';
+						$output  .= '<label><input type="checkbox" name="tax[' . $key . '][' . $term->slug . ']" ' . $checked . ' />' . $term->name . '</label>';
+						if ( $i === ( $page_id * $posts_per_page ) ) {
+							$output .= '</div>';
+							$page_id ++;
+							$output .= '<div class="themify-visibility-items-page themify-visibility-items-page-' . $page_id . ' is-hidden">';
+						}
+						$i++;
+					endforeach;
+					$output .= '</div>';
+					if ( $num_of_pages > 1 ) {
+						$output .= '<div class="themify-visibility-pagination">';
+						$output .= $this->create_page_pagination( 1, $num_of_pages );
+						$output .= '</div>';
+					}
+					$output .= '</div>';
+				}
+				break;
+
+			case 'category':
+				$key = 'category';
+				$terms = get_terms( 'category', array( 'hide_empty' => true ) );
+				if ( ! empty( $terms ) ) {
+					$i                   = 1;
+					$page_id             = 1;
+					$num_of_single_pages = count( $terms );
+					$num_of_pages        = (int) ceil( $num_of_single_pages / $posts_per_page );
+					$output              .= '<div class="themify-visibility-items-inner" data-items="' . $num_of_single_pages . '" data-pages="' . $num_of_pages . '">';
+					$output              .= '<div class="themify-visibility-items-page themify-visibility-items-page-' . $page_id . '">';
+					foreach ( $terms as $term ) :
+						$checked = isset( $selected['tax'][ $key ][ $term->slug ] ) ? checked( $selected['tax'][ $key ][ $term->slug ], 'on', false ) : '';
+						$output  .= '<label><input type="checkbox" name="tax[' . $key . '][' . $term->slug . ']" ' . $checked . ' />' . $term->name . '</label>';
+						if ( $i === ( $page_id * $posts_per_page ) ) {
+							$output .= '</div>';
+							$page_id ++;
+							$output .= '<div class="themify-visibility-items-page themify-visibility-items-page-' . $page_id . ' is-hidden">';
+						}
+						$i++;
+					endforeach;
+					$output .= '</div>';
+					if ( $num_of_pages > 1 ) {
+						$output .= '<div class="themify-visibility-pagination">';
+						$output .= $this->create_page_pagination( 1, $num_of_pages );
+						$output .= '</div>';
+					}
+					$output .= '</div>';
+				}
+				break;
+
+			default :
+				$post_types = apply_filters( 'themify_hooks_visibility_post_types', get_post_types( array( 'public' => true ) ) );
+				unset( $post_types['page'] );
+				$post_types = array_map( 'get_post_type_object', $post_types );
+				$post_id = 1;
+				foreach ( $post_types as $key => $post_type ) {
+					$output .= '<div id="visibility-tab-' . $key . '" class="themify-visibility-inner-tab '. ($post_id > 1 ? 'is-hidden' : '') .'">';
+					$posts = get_posts( array( 'post_type' => $key, 'posts_per_page' => -1, 'post_status' => 'publish', 'order' => 'ASC', 'orderby' => 'title',  'no_found_rows' => true ) );
+					if ( ! empty( $posts ) ) {
+						$i                   = 1;
+						$page_id             = 1;
+						$num_of_single_pages = count( $posts );
+						$num_of_pages        = (int) ceil( $num_of_single_pages / $posts_per_page );
+						$output              .= '<div class="themify-visibility-items-inner" data-items="' . $num_of_single_pages . '" data-pages="' . $num_of_pages . '">';
+						$output              .= '<div class="themify-visibility-items-page themify-visibility-items-page-' . $page_id . '">';
+						foreach ( $posts as $post ) :
+							$checked = isset( $selected['post_type'][ $key ][ $post->post_name ] ) ? checked( $selected['post_type'][ $key ][ $post->post_name ], 'on', false ) : '';
+							/* note: slugs are more reliable than IDs, they stay unique after export/import */
+							$output .= '<label><input type="checkbox" name="' . esc_attr( 'post_type[' . $key . '][' . $post->post_name . ']' ) . '" ' . $checked . ' />' . esc_html( $post->post_title ) . '</label>';
+							if ( $i === ( $page_id * $posts_per_page ) ) {
+								$output .= '</div>';
+								$page_id ++;
+								$output .= '<div class="themify-visibility-items-page themify-visibility-items-page-' . $page_id . ' is-hidden">';
+							}
+							$i++;
+						endforeach;
+						$output .= '</div>';
+						if ( $num_of_pages > 1 ) {
+							$output .= '<div class="themify-visibility-pagination">';
+							$output .= $this->create_page_pagination( 1, $num_of_pages );
+							$output .= '</div>';
+						}
+					}
+					$output .= '</div></div></div>';
+					$post_id++;
+				}
+				$output .= '</div>';
+				break;
+		}
+		wp_reset_postdata();
+
+		return $output;
 	}
 
 	public function get_visibility_options( $selected = array() ) {
@@ -376,10 +598,10 @@ class Themify_Conditional_Menus {
 
 		/* build the tab links */
 		$output .= '<li><a href="#visibility-tab-general">' . __( 'General', 'themify-cm' ) . '</a></li>';
-		$output .= '<li><a href="#visibility-tab-pages">' . __( 'Pages', 'themify-cm' ) . '</a></li>';
-			$output .= '<li><a href="#visibility-tab-categories-singles">' . __( 'Category Singles', 'themify-cm' ) . '</a></li>';
-		$output .= '<li><a href="#visibility-tab-categories">' . __( 'Categories', 'themify-cm' ) . '</a></li>';
-		$output .= '<li><a href="#visibility-tab-post-types">' . __( 'Post Types', 'themify-cm' ) . '</a></li>';
+		$output .= '<li><a href="#visibility-tab-pages" class="themify-visibility-tab" data-type="page">' . __( 'Pages', 'themify-cm' ) . '</a></li>';
+			$output .= '<li><a href="#visibility-tab-categories-singles" class="themify-visibility-tab" data-type="category_single">' . __( 'Category Singles', 'themify-cm' ) . '</a></li>';
+		$output .= '<li><a href="#visibility-tab-categories" class="themify-visibility-tab" data-type="category">' . __( 'Categories', 'themify-cm' ) . '</a></li>';
+		$output .= '<li><a href="#visibility-tab-post-types" class="themify-visibility-tab" data-type="post">' . __( 'Post Types', 'themify-cm' ) . '</a></li>';
 		$output .= '<li><a href="#visibility-tab-taxonomies">' . __( 'Taxonomies', 'themify-cm' ) . '</a></li>';
 		$output .= '<li><a href="#visibility-tab-userroles">' . __( 'User Roles', 'themify-cm' ) . '</a></li>';
 		$output .= '</ul>';
@@ -428,56 +650,27 @@ class Themify_Conditional_Menus {
 		$output .= '</div>'; // tab-general
 		   
 		// Pages tab
-		$output .= '<div id="visibility-tab-pages" class="themify-visibility-options clearfix">';
-			$key = 'page';
-			$posts = get_posts( array( 'post_type' => $key, 'posts_per_page' => -1, 'post_status' => 'publish', 'order' => 'ASC', 'orderby' => 'title',  'no_found_rows' => true) );
-			if( ! empty( $posts ) ) : foreach( $posts as $post ) :
-				if($post->post_parent>0){
-					 $post->post_name =  str_replace(home_url(),'',get_permalink($post->ID));
-				}
-				$checked = isset( $selected['post_type'][$key][$post->post_name] ) ? checked( $selected['post_type'][$key][$post->post_name], 'on', false ) : '';
-				/* note: slugs are more reliable than IDs, they stay unique after export/import */
-				$output .= '<label><input type="checkbox" name="post_type[' . $key . ']['. $post->post_name .']"'. $checked .' />' . $post->post_title . '</label>';
-			endforeach; endif;
+		wp_reset_postdata();
+		$output .= '<div id="visibility-tab-pages" class="themify-visibility-options themify-visibility-type-options clearfix" data-type="page">';
 		$output .= '</div>'; // tab-pages
 				
 		// Category Singles tab
-		$output .= '<div id="visibility-tab-categories-singles" class="themify-visibility-options clearfix">';
-			$key = 'category_single';
-			$terms = get_terms( 'category', array( 'hide_empty' => true ) );
-			if( ! empty( $terms ) ) : foreach( $terms as $term ) :
-				$checked = isset( $selected['tax'][$key][$term->slug] ) ? checked( $selected['tax'][$key][$term->slug], 'on', false ) : '';
-				$output .= '<label><input type="checkbox" name="tax['. $key .']['. $term->slug .']" '. $checked .' />' . $term->name . '</label>';
-			endforeach; endif;
+		$output .= '<div id="visibility-tab-categories-singles" class="themify-visibility-options themify-visibility-type-options clearfix" data-type="category_single">';
 		$output .= '</div>'; 
 				//
 		// Categories tab
-		$output .= '<div id="visibility-tab-categories" class="themify-visibility-options clearfix">';
-			$key = 'category';
-			if( ! empty( $terms ) ) : foreach( $terms as $term ) :
-				$checked = isset( $selected['tax'][$key][$term->slug] ) ? checked( $selected['tax'][$key][$term->slug], 'on', false ) : '';
-				$output .= '<label><input type="checkbox" name="tax['. $key .']['. $term->slug .']" '. $checked .' />' . $term->name . '</label>';
-			endforeach; endif;
+		$output .= '<div id="visibility-tab-categories" class="themify-visibility-options themify-visibility-type-options clearfix" data-type="category">';
 		$output .= '</div>'; // tab-categories
 
 		// Post types tab
-		$output .= '<div id="visibility-tab-post-types" class="themify-visibility-options clearfix">';
+		$output .= '<div id="visibility-tab-post-types" class="themify-visibility-options clearfix" data-type="post">';
 			$output .= '<div id="themify-visibility-post-types-inner-tabs" class="themify-visibility-inner-tabs">';
 			$output .= '<ul class="inline-tabs clearfix">';
 				foreach( $post_types as $key => $post_type ) {
 					$output .= '<li><a href="#visibility-tab-' . $key . '">' . $post_type->label . '</a></li>';
 				}
 			$output .= '</ul>';
-			foreach( $post_types as $key => $post_type ) {
-				$output .= '<div id="visibility-tab-' . $key . '" class="clearfix">';
-				$posts = get_posts( array( 'post_type' => $key, 'posts_per_page' => -1, 'post_status' => 'publish', 'order' => 'ASC', 'orderby' => 'title',  'no_found_rows' => true ) );
-				if( ! empty( $posts ) ) : foreach( $posts as $post ) :
-					$checked = isset( $selected['post_type'][$key][$post->post_name] ) ? checked( $selected['post_type'][$key][$post->post_name], 'on', false ) : '';
-					/* note: slugs are more reliable than IDs, they stay unique after export/import */
-					$output .= '<label><input type="checkbox" name="post_type[' . $key . ']['. $post->post_name .']"'. $checked .' />' . $post->post_title . '</label>';
-				endforeach; endif;
-				$output .= '</div>';
-			}
+		$output .= '<div class="themify-visibility-type-options clearfix" data-type="post"></div>';
 			$output .= '</div>';
 		$output .= '</div>'; // tab-post-types
 

@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit94acd08466c780b771c5bd33d4e665e4
+class ComposerStaticInit80ce4473100edd20fd6c17775a76ce9a
 {
     public static $prefixLengthsPsr4 = array (
         'N' => 
@@ -312,9 +312,11 @@ class ComposerStaticInit94acd08466c780b771c5bd33d4e665e4
         'Never5\\DownloadMonitor\\Dependencies\\Psr\\Log\\Test\\LoggerInterfaceTest' => __DIR__ . '/../..' . '/src/Dependencies/Psr/Log/Test/LoggerInterfaceTest.php',
         'Never5\\DownloadMonitor\\Dependencies\\Psr\\Log\\Test\\TestLogger' => __DIR__ . '/../..' . '/src/Dependencies/Psr/Log/Test/TestLogger.php',
         'Never5\\DownloadMonitor\\Shop\\Access\\Manager' => __DIR__ . '/../..' . '/src/Shop/Access/Manager.php',
+        'Never5\\DownloadMonitor\\Shop\\Admin\\DownloadOption' => __DIR__ . '/../..' . '/src/Shop/Admin/DownloadOption.php',
         'Never5\\DownloadMonitor\\Shop\\Admin\\Fields\\GatewayOverview' => __DIR__ . '/../..' . '/src/Shop/Admin/Fields/GatewayOverview.php',
         'Never5\\DownloadMonitor\\Shop\\Admin\\OrderTable' => __DIR__ . '/../..' . '/src/Shop/Admin/OrderTable.php',
         'Never5\\DownloadMonitor\\Shop\\Admin\\Pages\\Orders' => __DIR__ . '/../..' . '/src/Shop/Admin/Pages/Orders.php',
+        'Never5\\DownloadMonitor\\Shop\\Admin\\ProductTableColumns' => __DIR__ . '/../..' . '/src/Shop/Admin/ProductTableColumns.php',
         'Never5\\DownloadMonitor\\Shop\\Admin\\WritePanels' => __DIR__ . '/../..' . '/src/Shop/Admin/WritePanels.php',
         'Never5\\DownloadMonitor\\Shop\\Ajax\\AdminChangeOrderStatus' => __DIR__ . '/../..' . '/src/Shop/Ajax/AdminChangeOrderStatus.php',
         'Never5\\DownloadMonitor\\Shop\\Ajax\\Ajax' => __DIR__ . '/../..' . '/src/Shop/Ajax/Ajax.php',
@@ -333,7 +335,6 @@ class ComposerStaticInit94acd08466c780b771c5bd33d4e665e4
         'Never5\\DownloadMonitor\\Shop\\Checkout\\PaymentGateway\\PaymentGateway' => __DIR__ . '/../..' . '/src/Shop/Checkout/PaymentGateway/PaymentGateway.php',
         'Never5\\DownloadMonitor\\Shop\\Checkout\\PaymentGateway\\Result' => __DIR__ . '/../..' . '/src/Shop/Checkout/PaymentGateway/Result.php',
         'Never5\\DownloadMonitor\\Shop\\Checkout\\PaymentGateway\\Test\\TestGateway' => __DIR__ . '/../..' . '/src/Shop/Checkout/PaymentGateway/Test/TestGateway.php',
-        'Never5\\DownloadMonitor\\Shop\\DownloadProduct\\DownloadProduct' => __DIR__ . '/../..' . '/src/Shop/DownloadProduct/DownloadProduct.php',
         'Never5\\DownloadMonitor\\Shop\\Email\\Handler' => __DIR__ . '/../..' . '/src/Shop/Email/Handler.php',
         'Never5\\DownloadMonitor\\Shop\\Email\\Message' => __DIR__ . '/../..' . '/src/Shop/Email/Message.php',
         'Never5\\DownloadMonitor\\Shop\\Email\\VarParser' => __DIR__ . '/../..' . '/src/Shop/Email/VarParser.php',
@@ -354,6 +355,10 @@ class ComposerStaticInit94acd08466c780b771c5bd33d4e665e4
         'Never5\\DownloadMonitor\\Shop\\Order\\Transaction\\OrderTransaction' => __DIR__ . '/../..' . '/src/Shop/Order/Transaction/OrderTransaction.php',
         'Never5\\DownloadMonitor\\Shop\\Order\\Transaction\\OrderTransactionStatus' => __DIR__ . '/../..' . '/src/Shop/Order/Transaction/OrderTransactionStatus.php',
         'Never5\\DownloadMonitor\\Shop\\Order\\WordPressRepository' => __DIR__ . '/../..' . '/src/Shop/Order/WordPressRepository.php',
+        'Never5\\DownloadMonitor\\Shop\\Product\\Factory' => __DIR__ . '/../..' . '/src/Shop/Product/Factory.php',
+        'Never5\\DownloadMonitor\\Shop\\Product\\Product' => __DIR__ . '/../..' . '/src/Shop/Product/Product.php',
+        'Never5\\DownloadMonitor\\Shop\\Product\\Repository' => __DIR__ . '/../..' . '/src/Shop/Product/Repository.php',
+        'Never5\\DownloadMonitor\\Shop\\Product\\WordPressRepository' => __DIR__ . '/../..' . '/src/Shop/Product/WordPressRepository.php',
         'Never5\\DownloadMonitor\\Shop\\Services\\ServiceProvider' => __DIR__ . '/../..' . '/src/Shop/Services/ServiceProvider.php',
         'Never5\\DownloadMonitor\\Shop\\Services\\Services' => __DIR__ . '/../..' . '/src/Shop/Services/Services.php',
         'Never5\\DownloadMonitor\\Shop\\Session\\Cookie' => __DIR__ . '/../..' . '/src/Shop/Session/Cookie.php',
@@ -371,7 +376,9 @@ class ComposerStaticInit94acd08466c780b771c5bd33d4e665e4
         'Never5\\DownloadMonitor\\Shop\\Tax\\TaxRate' => __DIR__ . '/../..' . '/src/Shop/Tax/TaxRate.php',
         'Never5\\DownloadMonitor\\Shop\\Util\\Assets' => __DIR__ . '/../..' . '/src/Shop/Util/Assets.php',
         'Never5\\DownloadMonitor\\Shop\\Util\\Page' => __DIR__ . '/../..' . '/src/Shop/Util/Page.php',
+        'Never5\\DownloadMonitor\\Shop\\Util\\PostType' => __DIR__ . '/../..' . '/src/Shop/Util/PostType.php',
         'Never5\\DownloadMonitor\\Shop\\Util\\Redirect' => __DIR__ . '/../..' . '/src/Shop/Util/Redirect.php',
+        'Never5\\DownloadMonitor\\Shop\\Util\\TemplateInjector' => __DIR__ . '/../..' . '/src/Shop/Util/TemplateInjector.php',
         'Never5\\DownloadMonitor\\Util\\ExtensionLoader' => __DIR__ . '/../..' . '/src/Util/ExtensionLoader.php',
         'Never5\\DownloadMonitor\\Util\\Onboarding' => __DIR__ . '/../..' . '/src/Util/Onboarding.php',
         'Never5\\DownloadMonitor\\Util\\PageCreator' => __DIR__ . '/../..' . '/src/Util/PageCreator.php',
@@ -385,9 +392,9 @@ class ComposerStaticInit94acd08466c780b771c5bd33d4e665e4
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit94acd08466c780b771c5bd33d4e665e4::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit94acd08466c780b771c5bd33d4e665e4::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit94acd08466c780b771c5bd33d4e665e4::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit80ce4473100edd20fd6c17775a76ce9a::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit80ce4473100edd20fd6c17775a76ce9a::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit80ce4473100edd20fd6c17775a76ce9a::$classMap;
 
         }, null, ClassLoader::class);
     }
