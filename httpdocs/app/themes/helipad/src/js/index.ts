@@ -1,4 +1,3 @@
 import Masthead from './components/Masthead';
 
-new Masthead;
-
+Masthead.myFunction("Hello World");

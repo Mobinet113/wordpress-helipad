@@ -4,7 +4,7 @@ const cache = require('gulp-cache');
 const sourcemaps = require('gulp-sourcemaps');
 const browserSync = require('browser-sync').create();
 
-// JS Optimisation Dependencies
+// JS Compilation Dependencies
 const rename = require('gulp-rename');
 const webpackStream = require('webpack-stream');
 
@@ -27,9 +27,9 @@ let domain = 'helipad.test'; // Used for BrowserSync
  * changes and perform respective tasks
  */
 
-function watchForChanges(cb) {
+function watchForChanges() {
   watch('src/scss/**/*.scss', compileSass);  // Watch for Sass changes
-  watch('src/js/**/*.js', compileScripts); // Watch for JS changes
+  watch('**/*.ts', compileScripts); // Watch for JS changes
   watch('**/*.php', reloadBrowser); // Watch for PHP changes
   watch('**/*.html', reloadBrowser); // Watch for HTML changes
   watch('src/media/**/*', minifyImages);
@@ -39,7 +39,7 @@ function watchForChanges(cb) {
 /**
  * Reload the browser tab on save
  */
-function reloadBrowser(cb) {
+function reloadBrowser() {
   browserSync.init({
     baseDir: './',
     proxy: 'http://' + domain,
@@ -54,7 +54,7 @@ function reloadBrowser(cb) {
  * @param cb
  * @returns {*}
  */
-function compileSass(cb) {
+function compileSass() {
 
   // PostCss Plugins to run after Sass compile
   let postCssPlugins = [
@@ -85,25 +85,27 @@ function compileSass(cb) {
  * @param cb
  * @returns {*}
  */
-function compileScripts(cb) {
-  return src('src/js/index.js')
+function compileScripts() {
+  return src('src/js/index.ts')
     .pipe(sourcemaps.init())
 
     .pipe(webpackStream(
       {
-        entry: './src/js/index.js',
+        mode: "development",
+        entry: './src/js/index.ts',
         output: {
           filename: 'scripts.js',
+        },
+        resolve: {
+          // Add `.ts` and `.tsx` as a resolvable extension.
+          extensions: [".ts", ".tsx", ".js"]
         },
         module: {
           rules: [
             {
-              test: /\.(js)$/,
+              test: /\.(ts)$/,
               exclude: /(node_modules)/,
-              loader: 'babel-loader',
-              query: {
-                presets: ['@babel/env', '@babel/typescript']
-              }
+              loader: 'ts-loader'
             }
           ]
         }
@@ -112,7 +114,6 @@ function compileScripts(cb) {
 
     .on('error', handleError)
 
-    .pipe(sourcemaps.write())
 
     .pipe(rename('scripts.js'))
     .pipe(dest('dist/js/'))
@@ -128,7 +129,7 @@ function compileScripts(cb) {
  * @param cb
  * @returns {*}
  */
-function minifyImages(cb) {
+function minifyImages() {
   return src('src/media/**/*.+(png|jpg|gif|svg)')
     .pipe(cache(imagemin({
       interlaced: true
@@ -145,12 +146,29 @@ function handleError(err) {
   this.emit('end');
 }
 
+/**
+ * Run compilation and minification functions
+ * @param cb
+ * @returns {*}
+ */
+function build() {
+  parallel(
+    compileScripts,
+    compileSass,
+    minifyImages
+  );
+
+  return cb();
+}
+
 
 // Module exports...
 
 exports.sass = compileSass;
-exports.script = compileScripts;
+exports.scripts = compileScripts;
 exports.images = minifyImages;
 
-exports.watch = series(reloadBrowser, watchForChanges);
-exports.default = parallel(compileSass, compileScripts, minifyImages);
+exports.watch = parallel(reloadBrowser, watchForChanges);
+
+
+exports.default = build;
