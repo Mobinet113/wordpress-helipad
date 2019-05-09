@@ -148,17 +148,15 @@ function handleError(err) {
 
 /**
  * Run compilation and minification functions
- * @param cb
  * @returns {*}
  */
 function build() {
-  parallel(
+  return parallel(
     compileScripts,
     compileSass,
     minifyImages
   );
 
-  return cb();
 }
 
 
