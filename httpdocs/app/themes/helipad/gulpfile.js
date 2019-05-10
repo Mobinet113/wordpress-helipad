@@ -30,8 +30,8 @@ let domain = 'helipad.test'; // Used for BrowserSync
 function watchForChanges() {
   watch('src/scss/**/*.scss', compileSass);  // Watch for Sass changes
   watch('**/*.ts', compileScripts); // Watch for JS changes
-  watch('**/*.php', reloadBrowser); // Watch for PHP changes
-  watch('**/*.html', reloadBrowser); // Watch for HTML changes
+  watch('**/*.php', browserSync.reload); // Watch for PHP changes
+  watch('**/*.html', browserSync.reload); // Watch for HTML changes
   watch('src/media/**/*', minifyImages);
 }
 
