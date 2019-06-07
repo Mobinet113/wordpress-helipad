@@ -1,34 +1,44 @@
 <?php
-/*
-    This file contains all the custom post types for the site
-*/
+/**
+ * This file contains all our methods to create custom post types within the Helipad theme
+ *
+ * @package Helipad
+ */
 
-new postTypes();
+new PostTypes();
 
-class postTypes
-{
+/**
+ * Class containing all our custom post types.
+ * Class PostTypes
+ */
+class PostTypes {
 
-    function __construct()
-    {
-        add_action('init', array($this, 'people'   ));
-    }
+	/**
+	 * Construct the post type class.
+	 * postTypes constructor.
+	 */
+	public function __construct() {
+		add_action( 'init', array( $this, 'people' ) );
+	}
 
-    function people()
-    {
-        register_post_type(
-            'people',
-            array(
-            'labels' => array(
-            'name' => __('People'),
-            'singular_name' => __('Person')
-            ),
-            'public' => true,
-            'has_archive' => true,
-            'supports' => array( 'title', 'editor', 'excerpt', 'thumbnail', 'revisions', 'custom-fields' ),
-            'taxonomies'  => array( 'category' ),
-            'menu_icon'           => 'dashicons-media-text',
-            )
-        );
-    }
+	/**
+	 * Register the People custom post type.
+	 */
+	public function people() {
+		register_post_type(
+			'people',
+			array(
+				'labels'      => array(
+					'name'          => __( 'People' ),
+					'singular_name' => __( 'Person' ),
+				),
+				'public'      => true,
+				'has_archive' => true,
+				'supports'    => array( 'title', 'editor', 'excerpt', 'thumbnail', 'revisions', 'custom-fields' ),
+				'taxonomies'  => array( 'category' ),
+				'menu_icon'   => 'dashicons-media-text',
+			)
+		);
+	}
 
 }
