@@ -104,4 +104,5 @@ add_action( 'wp_enqueue_scripts', 'load_scripts' );
  * Load Inc files with further functions
  */
 
-require 'inc/postTypes.php';
+require 'inc/class-metaboxes.php';
+require 'inc/class-posttypes.php';

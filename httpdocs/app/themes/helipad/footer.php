@@ -3,7 +3,6 @@
  * The footer template for the theme
  *
  * @package Helipad
- * @author Benjamin Roffe
  */
 
 ?>

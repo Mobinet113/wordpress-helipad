@@ -3,24 +3,22 @@
  * The generic page template
  *
  * @package Helipad
- * @author Benjamin Roffe
- * @license MIT
  */
 
 get_header(); ?>
 
   <main id="primary" class="page">
     <div class="container">
-    <?php
-    while ( have_posts() ) :
-        the_post();
-        ?>
+		<?php
+		while ( have_posts() ) :
+			the_post();
+			?>
 
           <h1><?php the_title(); ?></h1>
 
-        <?php the_content(); ?>
+			<?php the_content(); ?>
 
-    <?php endwhile; ?>
+		<?php endwhile; ?>
     </div>
   </main>
 
