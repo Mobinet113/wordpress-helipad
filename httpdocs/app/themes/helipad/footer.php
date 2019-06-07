@@ -1,3 +1,12 @@
+<?php
+/**
+ * The footer template for the theme
+ *
+ * @package Helipad
+ * @author Benjamin Roffe
+ */
+
+?>
 
 <footer id="colophon" role="contentinfo">
 

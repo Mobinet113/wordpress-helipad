@@ -1,24 +1,31 @@
-const {src, dest, series, watch, parallel} = require('gulp');
-const imagemin = require('gulp-imagemin');
-const cache = require('gulp-cache');
-const sourcemaps = require('gulp-sourcemaps');
-const browserSync = require('browser-sync').create();
+/**
+ * This is the gulp.js main task-watcher file
+ *
+ * @package Helipad
+ * @author Benjamin Roffe
+ */
 
-// JS Compilation Dependencies
-const rename = require('gulp-rename');
-const webpackStream = require('webpack-stream');
+const { src, dest, watch, parallel } = require( 'gulp' );
+const imagemin                       = require( 'gulp-imagemin' );
+const cache                          = require( 'gulp-cache' );
+const sourcemaps                     = require( 'gulp-sourcemaps' );
+const browserSync                    = require( 'browser-sync' ).create();
 
-// PostCSS & Sass Dependencies
-const sass = require('gulp-sass');
-const postcss = require('gulp-postcss');
-const autoprefixer = require('autoprefixer');
-const cssnano = require('cssnano');
+// JS Compilation Dependencies.
+const rename        = require( 'gulp-rename' );
+const webpackStream = require( 'webpack-stream' );
+
+// PostCSS & Sass Dependencies.
+const sass         = require( 'gulp-sass' );
+const postcss      = require( 'gulp-postcss' );
+const autoprefixer = require( 'autoprefixer' );
+const cssnano      = require( 'cssnano' );
 
 
 /**
  * Settings
  */
-let domain = 'helipad.test'; // Used for BrowserSync
+let domain = 'helipad.test'; // Used for BrowserSync.
 
 
 /**
@@ -28,11 +35,11 @@ let domain = 'helipad.test'; // Used for BrowserSync
  */
 
 function watchForChanges() {
-  watch('src/scss/**/*.scss', compileSass);  // Watch for Sass changes
-  watch('**/*.ts', compileScripts); // Watch for JS changes
-  watch('**/*.php', browserSync.reload); // Watch for PHP changes
-  watch('**/*.html', browserSync.reload); // Watch for HTML changes
-  watch('src/media/**/*', minifyImages);
+  watch( 'src/scss/**/*.scss', compileSass );  // Watch for Sass changes.
+  watch( '**/*.ts', compileScripts ); // Watch for JS changes.
+  watch( '**/*.php', browserSync.reload ); // Watch for PHP changes.
+  watch( '**/*.html', browserSync.reload ); // Watch for HTML changes.
+  watch( 'src/media/**/*', minifyImages );
 }
 
 
@@ -41,10 +48,10 @@ function watchForChanges() {
  */
 function reloadBrowser() {
   browserSync.init({
-    baseDir: './',
-    proxy: 'http://' + domain,
-    host: domain,
-    open: 'external'
+    baseDir:    './',
+    proxy:      'http://' + domain,
+    host:       domain,
+    open:       'external'
   })
 }
 
@@ -56,13 +63,13 @@ function reloadBrowser() {
  */
 function compileSass() {
 
-  // PostCss Plugins to run after Sass compile
+  // PostCss Plugins to run after Sass compile.
   let postCssPlugins = [
     autoprefixer(),
     cssnano()
   ];
 
-  return src('src/scss/main.scss')
+  return src( 'src/scss/main.scss' )
     .pipe(sourcemaps.init())
 
     // We want to log any sass errors
@@ -126,7 +133,6 @@ function compileScripts() {
 
 /**
  * Gulp image minification task
- * @param cb
  * @returns {*}
  */
 function minifyImages() {

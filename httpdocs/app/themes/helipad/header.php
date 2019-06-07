@@ -5,12 +5,15 @@
  * @link https://developer.wordpress.org/themes/basics/template-files/#template-partials
  *
  * @package Helipad
+ * @author Benjamin Roffe
  */
+
 ?>
+
 <!DOCTYPE html>
-<html <?php language_attributes(); ?>>
+<html <?php language_attributes(); ?> lang="en">
 <head>
-  <meta charset="<?php bloginfo('charset'); ?>">
+  <meta charset="<?php bloginfo( 'charset' ); ?>">
 
   <meta name="theme-color" content="#F44336">
   <meta name="msapplication-navbutton-color" content="#F44336">
@@ -22,15 +25,15 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-  <meta name="description" content="<?php bloginfo('description'); ?>">
+  <meta name="description" content="<?php bloginfo( 'description' ); ?>">
 
 
-  <?php wp_head(); ?>
+	<?php wp_head(); ?>
 </head>
 
 <body <?php body_class(); ?>>
 
 <div id="page" class="site">
   <header id="masthead" class="site-header" role="banner">
-    <?php get_template_part('template-parts/layout/layout', 'main-nav'); ?>
+	  <?php get_template_part( 'template-parts/layout/layout', 'main-nav' ); ?>
   </header>
