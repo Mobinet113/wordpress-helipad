@@ -88,12 +88,19 @@ function load_scripts() {
 
 	// create version codes.
 	$main_js_ver  = date( 'ymd-Gis', filemtime( __DIR__ . '/dist/js/scripts.js' ) );
-	$main_css_ver = date( 'ymd-Gis', filemtime( __DIR__ . '/dist/js/scripts.js' ) );
+	$main_css_ver = date( 'ymd-Gis', filemtime( __DIR__ . '/dist/css/main.css' ) );
 
 	// enqueue the scripts and stylesheets.
 	wp_enqueue_script( 'main_js', $main_js_loc, array( 'jquery' ), $main_js_ver, true );
 	wp_register_style( 'main_css', $main_css_loc, false, $main_css_ver );
+	wp_register_style(
+		'bootstrap_css',
+		'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css',
+		false,
+		'4.3.1'
+	);
 	wp_enqueue_style( 'main_css' );
+	wp_enqueue_style( 'bootstrap_css' );
 
 }
 
