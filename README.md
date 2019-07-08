@@ -1,5 +1,7 @@
 # Helipad 
 
+[![Build Status](https://jenkins.broffe.com/buildStatus/icon?job=Helipad)](https://jenkins.broffe.com/job/Helipad/)
+
 Modern out-of-the-box WordPress installation utilising [Bedrock](https://roots.io/bedrock/) as a starting point.
 
 ## Theme Features
