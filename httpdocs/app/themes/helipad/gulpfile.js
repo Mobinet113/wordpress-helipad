@@ -14,6 +14,8 @@ const browserSync = require( 'browser-sync' ).create()
 // JS Compilation Dependencies.
 const rename = require( 'gulp-rename' )
 const webpackStream = require( 'webpack-stream' )
+const babel         = require( 'gulp-babel' )
+
 
 // PostCSS & Sass Dependencies.
 const sass = require( 'gulp-sass' )
@@ -116,6 +118,9 @@ function compileScripts () {
 		)
 		.on( 'error', handleError )
 		.pipe( rename( 'scripts.js' ) )
+		.pipe( babel( {
+                    presets: [ '@babel/env' ],
+                  } ) )
 		.pipe( dest( 'dist/js/' ) )
 		.pipe( browserSync.reload( { stream: true } ) )
 
