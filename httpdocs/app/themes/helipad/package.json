@@ -33,7 +33,7 @@
     "webpack-stream": "^5.2.1"
   },
   "dependencies": {
-    "gsap": "^2.1.1"
+    "gsap": "^3.6.0"
   },
   "scripts": {
     "start": "gulp watch",
